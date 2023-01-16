@@ -1,0 +1,3 @@
+[submodule "nnsnooper"]
+	path = nnsnooper
+	url = git@github.com:LudwigTheRunner/PySnooper.git
