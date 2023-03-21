@@ -1,7 +1,6 @@
 # import inspect
 import ast, astunparse
 from typing import Any
-import os
 import copy
 class deAliasTransformer(ast.NodeTransformer):
     aliasMap = dict()
@@ -47,26 +46,18 @@ def __filterAST(mod: ast.Module):
     return filtered_node
 
 
-
-
-def __getDefClosure(root, nonLocalContext, aliasNotion):
-    resultSet = list()
-    localContext = dict(nonLocalContext)
-    localAliasNotion = dict(aliasNotion)
-    for node in ast.iter_child_nodes(root):
-        
-        if isinstance(node, ast.Import):
-            pass#add to localContext, add alias notation
-        elif isinstance(node, ast.ClassDef):
-            classResult = __getDefClosure(node, localContext, localAliasNotion)
-        elif isinstance(node, ast.Assign):
-            pass#add to localContext, no alias
-    return resultSet
-
-
 def getDefs(filename):
     with open(filename,'r') as f:            
         parsed = ast.parse(f.read())
         parsed = deAliasTransformer().visit(parsed)
         parsed = __filterAST(parsed)
-        print(astunparse.unparse(parsed))
+        with open('dummy.py', 'w') as w:
+            w.write(astunparse.unparse(parsed))
+
+
+import tokenize
+
+with tokenize.open('hello.py') as f:
+    tokens = tokenize.generate_tokens(f.readline)
+    for token in tokens:
+        print(token)
